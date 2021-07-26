@@ -4,6 +4,9 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 
+// Vibrasiya Android Handheld.Vibrate();
+
+
 public class Controller : MonoBehaviour
 {
     Animator anim;
@@ -55,9 +58,9 @@ public class Controller : MonoBehaviour
 
         if (transform.position.y > heighBackup / 1.3f)
         {
-            //SpawnPlatforms();
+            //SpawnPlatforms();    
         }
-        
+
     }
 
     public int heighBackup;
