@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlatformSpawnerScript : MonoBehaviour {
 
-	float yPosAtLastSpawn = 5f;
-	int lastXPos = 0;
+	public float yPosAtLastSpawn = 5f;
+	float lastXPos = 0;
     Queue prefabqueue;
     bool isPaused;
     public float distanceBetween = 3.2f;
@@ -85,6 +85,10 @@ public class PlatformSpawnerScript : MonoBehaviour {
                         prefabqueue.Enqueue(platformPrefabs[5]);
                     }
                 }
+                else
+                {
+                        prefabqueue.Enqueue(platformPrefabs[i]);
+                }
                 return;
             }
         }
@@ -123,20 +127,22 @@ public class PlatformSpawnerScript : MonoBehaviour {
         }
     }
 
-	/**
+    /**
 	 * Returns a random x-position to spawn a platform at.
 	 * Makes two platforms in the same position twice
 	 * in a row less likely, though not impossible
 	 */
-	int correctX() {
+    float x2;
+    float correctX() {
         int x = Random.Range(0, 3);
-        if (x == 0) x = -2;
-        else if (x == 1) x = 0;
-        else if (x == 2) x = 2;
+   
+        if (x == 0) x2 = -1.8f;
+        else if (x == 1) x2 = 0;
+        else if (x == 2) x2 = 1.8f;
 
 
-		lastXPos = x;
-		return x;
+        lastXPos = x2;
+		return x2;
 	}
 
     /**
@@ -161,7 +167,7 @@ public class PlatformSpawnerScript : MonoBehaviour {
      * Sets the spawnposition for the other platform.
      * There is always at least two world units between them.
      */
-    int Xvalue(int otherX)
+    float Xvalue(float otherX)
     {
         if (otherX < 0)
         {
