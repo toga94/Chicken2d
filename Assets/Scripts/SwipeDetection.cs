@@ -19,7 +19,6 @@ public class SwipeDetection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         isMobile = Application.isMobilePlatform;
     }
 
@@ -42,21 +41,28 @@ public class SwipeDetection : MonoBehaviour
         {
             if (Input.touchCount > 0)
             {
-                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                switch (Input.GetTouch(0).phase)
                 {
-                    isSwiping = true;
-                    tapPosition = Input.GetTouch(0).position;
+                    case TouchPhase.Began:
+                        isSwiping = true;
+                        tapPosition = Input.GetTouch(0).position;
+                        break;
+                    case TouchPhase.Canceled:
+                    case TouchPhase.Ended:
+                        ResetSwipe();
+                        break;
+                    case TouchPhase.Moved:
+                        break;
+                    case TouchPhase.Stationary:
+                        break;
+                    default:
+                        break;
                 }
-                else if (Input.GetTouch(0).phase == TouchPhase.Canceled || 
-                    Input.GetTouch(0).phase == TouchPhase.Ended) 
-                {
-                    ResetSwipe();
-                } 
             }
         }
         CheckSwipe();
     }
-    private void CheckSwipe() 
+    private void CheckSwipe()
     {
         swipeDelta = Vector2.zero;
         if (isSwiping)
@@ -67,20 +73,18 @@ public class SwipeDetection : MonoBehaviour
                 swipeDelta = Input.GetTouch(0).position - tapPosition;
         }
 
-        if (swipeDelta.magnitude > deadZone)
+        if (swipeDelta.magnitude > deadZone && SwipeEvent != null)
         {
-            if (SwipeEvent != null) {
-                if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
-                    SwipeEvent?.Invoke(swipeDelta.x > 0 ? Vector2.right : Vector2.left);
-                else
-                    SwipeEvent?.Invoke(swipeDelta.y > 0 ? Vector2.up : Vector2.down);
-            }
+            if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+                SwipeEvent?.Invoke(swipeDelta.x > 0 ? Vector2.right : Vector2.left);
+            else
+                SwipeEvent?.Invoke(swipeDelta.y > 0 ? Vector2.up : Vector2.down);
         }
         Debug.Log("Sweeping - " + isSwiping + swipeDelta.magnitude);
         ResetSwipe();
     }
 
-    private void ResetSwipe() 
+    private void ResetSwipe()
     {
         isSwiping = false;
         swipeDelta = Vector2.zero;  

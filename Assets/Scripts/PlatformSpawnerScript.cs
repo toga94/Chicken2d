@@ -101,23 +101,23 @@ public class PlatformSpawnerScript : MonoBehaviour {
      */
     void choosePlatform()
     {
-        if (this.transform.position.y < 200)
+        if (transform.position.y < 200)
         {
             basicPlatformScheme();
         }
-        else if (this.transform.position.y < 500)
+        else if (transform.position.y < 500)
         {
             PlatformScheme(45, 45, 10);
         }
-        else if (this.transform.position.y < 700)
+        else if (transform.position.y < 700)
         {
             PlatformScheme(0, 100); // First all moving
         }
-        else if (this.transform.position.y < 1000)
+        else if (transform.position.y < 1000)
         {
             PlatformScheme(60, 20, 10, 10); // Flips
         }
-        else if (this.transform.position.y < 1500)
+        else if (transform.position.y < 1500)
         {
             PlatformScheme(30, 40, 5, 15, 10); // More hard stuff, first blink
         }
@@ -167,13 +167,8 @@ public class PlatformSpawnerScript : MonoBehaviour {
      * Sets the spawnposition for the other platform.
      * There is always at least two world units between them.
      */
-    float Xvalue(float otherX)
+    private float Xvalue(float otherX)
     {
-        if (otherX < 0)
-        {
-            return 2 * Random.Range(otherX / 2 + 3, 4);
-        }
-
-        return 2 * Random.Range(-3, otherX / 2 - 2);
+        return otherX < 0 ? 2 * Random.Range(otherX / 2 + 3, 4) : 2 * Random.Range(-3, otherX / 2 - 2);
     }
 }
