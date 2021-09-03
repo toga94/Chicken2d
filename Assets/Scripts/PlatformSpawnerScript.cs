@@ -22,7 +22,8 @@ public class PlatformSpawnerScript : MonoBehaviour {
 			return;
 		}
 
-		if (yPosAtLastSpawn + distanceBetween < Camera.main.transform.position.y) {
+        if (yPosAtLastSpawn + distanceBetween < Camera.main.transform.position.y)
+        {
 			spawnPlatform ();
 			yPosAtLastSpawn += distanceBetween;
 		}
@@ -70,24 +71,33 @@ public class PlatformSpawnerScript : MonoBehaviour {
             if (randomInt < percentageCounter)
             {
                 prefabqueue.Enqueue(platformPrefabs[i]);
-                if (i == 3)
+                switch (i)
                 {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        prefabqueue.Enqueue(platformPrefabs[0]);
-                    }
-                    prefabqueue.Enqueue(platformPrefabs[3]);
-                }
-                else if (i == 4)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        prefabqueue.Enqueue(platformPrefabs[5]);
-                    }
-                }
-                else
-                {
-                        prefabqueue.Enqueue(platformPrefabs[i]);
+                    case 3:
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                prefabqueue.Enqueue(platformPrefabs[0]);
+                            }
+                            prefabqueue.Enqueue(platformPrefabs[3]);
+                            break;
+                        }
+
+                    case 4:
+                        {
+                            for (int j = 0; j < 4; j++)
+                            {
+                                prefabqueue.Enqueue(platformPrefabs[5]);
+                            }
+                            break;
+                        }
+
+                    default:
+                        for (int j = 0; j < i; j++)
+                        {
+                            prefabqueue.Enqueue(platformPrefabs[i]);
+                        }
+                        break;
                 }
                 return;
             }
