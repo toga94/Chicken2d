@@ -49,7 +49,7 @@ PlayerSettings:
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 0
   m_MTRendering: 1
-  mipStripping: 0
+  mipStripping: 1
   numberOfMipsStripped: 0
   m_StackTraceTypes: 010000000100000001000000010000000100000001000000
   iosShowActivityIndicatorOnLoading: -1
@@ -262,7 +262,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: d91d2c573b7d2e442bac54a4da9d7ce7, type: 3}
+      m_Icon: {fileID: 2800000, guid: 3213c4d9578cc5f46a0ec3d9728ebb1c, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

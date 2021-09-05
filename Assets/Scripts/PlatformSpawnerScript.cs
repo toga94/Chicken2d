@@ -28,7 +28,6 @@ public class PlatformSpawnerScript : MonoBehaviour {
 			yPosAtLastSpawn += distanceBetween;
 		}
 	}
-
 	/**
 	 * Spawns a random platform type at a random x-position.
      * Only queues if the queue is empty.
@@ -42,7 +41,14 @@ public class PlatformSpawnerScript : MonoBehaviour {
         float yPos = yPosAtLastSpawn + distanceBetween + 15f;
         Vector2 pos = new Vector2(correctX(), yPos);
         GameObject go = Instantiate(platformType, pos, Quaternion.identity);
+        if (platformParent) go.transform.parent = platformParent;
+        else 
+        { 
+        platformParent = (Transform) new GameObject(platformPrefabs[0].name).transform;
+            GameObject spawnerObj = GameObject.Find(this.gameObject.name);
+            platformParent.parent = spawnerObj.transform;
         go.transform.parent = platformParent;
+        }
        // SpawnSecond(platformType, yPos);
 	}
 
@@ -70,15 +76,20 @@ public class PlatformSpawnerScript : MonoBehaviour {
             percentageCounter += percentages[i];
             if (randomInt < percentageCounter)
             {
-                prefabqueue.Enqueue(platformPrefabs[i]);
+                try
+                {
+                    prefabqueue.Enqueue(platformPrefabs[i]);
+                }
+                catch (System.Exception)
+                {
+
+                }
+
                 switch (i)
                 {
                     case 3:
                         {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                prefabqueue.Enqueue(platformPrefabs[0]);
-                            }
+                            prefabqueue.Enqueue(platformPrefabs[0]);
                             prefabqueue.Enqueue(platformPrefabs[3]);
                             break;
                         }
@@ -95,7 +106,14 @@ public class PlatformSpawnerScript : MonoBehaviour {
                     default:
                         for (int j = 0; j < i; j++)
                         {
-                            prefabqueue.Enqueue(platformPrefabs[i]);
+                            try
+                            {
+                                prefabqueue.Enqueue(platformPrefabs[i]);
+                            }
+                            catch (System.Exception)
+                            {
+                            }
+
                         }
                         break;
                 }
@@ -111,30 +129,32 @@ public class PlatformSpawnerScript : MonoBehaviour {
      */
     void choosePlatform()
     {
-        if (transform.position.y < 200)
+        /* if (transform.position.y < 20)
         {
             basicPlatformScheme();
         }
-        else if (transform.position.y < 500)
+        else if (transform.position.y < 40)
         {
             PlatformScheme(45, 45, 10);
         }
-        else if (transform.position.y < 700)
+        else if (transform.position.y < 60)
         {
-            PlatformScheme(0, 100); // First all moving
+            PlatformScheme(0, 50, 30, 20, 10); // First all moving
         }
-        else if (transform.position.y < 1000)
+        else if (transform.position.y < 80)
         {
-            PlatformScheme(60, 20, 10, 10); // Flips
+            PlatformScheme(30, 20, 10, 10, 30); // Flips
         }
-        else if (transform.position.y < 1500)
+        else if (transform.position.y < 100)
         {
-            PlatformScheme(30, 40, 5, 15, 10); // More hard stuff, first blink
+            PlatformScheme(20, 30, 5, 15, 10, 10, 10); // More hard stuff, first blink
         }
         else
         {
-            PlatformScheme(0, 80, 5, 10, 5); // Fliptastic
-        }
+            PlatformScheme(0, 40, 5, 10, 5, 10, 10, 10, 10); // Fliptastic
+        } */
+
+        PlatformScheme(3, 18, 15, 12, 11, 10, 9, 8, 5, 20); // More hard stuff, first blink
     }
 
     /**

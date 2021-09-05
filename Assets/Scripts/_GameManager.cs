@@ -13,7 +13,9 @@ public class _GameManager : MonoBehaviour
         danforde = GameObject.Find("_DanForden").GetComponent<PlayableDirector>();
         Debug.Log("Toasty Start");
     }
-
+    public void PlayToasty() {
+        danforde.Play();
+    }
     // Update is called once per frame
     void FixedUpdate()
     {

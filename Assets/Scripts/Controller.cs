@@ -9,11 +9,16 @@ using System;
 
 public class Controller : MonoBehaviour
 {
+    AudioSource asource;
     Animator anim;
+    public GameObject eggParent;
+    SpriteRenderer sprender;
     // Start is called before the first frame update
     private void Start()
     {
+        sprender = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        asource = GetComponent<AudioSource>();
     }
 
     public void OnSwipeLeft()
@@ -22,7 +27,8 @@ public class Controller : MonoBehaviour
             transform.DOMove(new Vector2(transform.position.x - 1.8f,
                transform.position.y + jumpPower), 0f)
            .SetEase(Ease.Flash);
-
+            sprender.flipX = false;
+            asource.Play();
         }
 
     }
@@ -33,7 +39,9 @@ public class Controller : MonoBehaviour
             transform.DOMove(new Vector2(transform.position.x + 1.8f,
 transform.position.y + jumpPower), 0f)
 .SetEase(Ease.Flash);
-           // transform.DOShakeRotation(0.15f, 1, 100, 100).SetEase(Ease.OutElastic);
+            // transform.DOShakeRotation(0.15f, 1, 100, 100).SetEase(Ease.OutElastic);
+            sprender.flipX = true;
+            asource.Play();
         }
 
     }
@@ -42,6 +50,14 @@ transform.position.y + jumpPower), 0f)
     {
         anim.SetTrigger("egg");
         eggGo = (GameObject) Instantiate(Resources.Load("egg"), transform.position - transform.up, Quaternion.identity);
+        if (eggParent) eggGo.transform.parent = eggParent.transform;
+        else {
+            eggParent = new GameObject("_eggParent");
+            GameObject spawnerObj = GameObject.Find("_Spawner");
+            eggParent.transform.parent = spawnerObj.transform;
+            eggGo.transform.parent = eggParent.transform;
+        }
+        
         Destroy(eggGo, 20);
     }
 
@@ -61,7 +77,7 @@ transform.position.y + jumpPower), 0f)
         else {
             curtime = 0;
             transform.DOJump(new Vector2(transform.position.x,
-               transform.position.y + jumpPower), 1,1,0.1f).SetEase(Ease.OutFlash).OnComplete(InstanceEgg);
+               transform.position.y + jumpPower), 1,1,0.1f).SetEase(Ease.InBounce).OnComplete(InstanceEgg);
         }
     }
 
