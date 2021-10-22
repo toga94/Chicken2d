@@ -28,27 +28,36 @@ public class PlatformSpawnerScript : MonoBehaviour {
 			yPosAtLastSpawn += distanceBetween;
 		}
 	}
-	/**
+    /**
 	 * Spawns a random platform type at a random x-position.
      * Only queues if the queue is empty.
 	 */
-	void spawnPlatform() {
+    GameObject platformType;
+
+    void spawnPlatform() {
         if (prefabqueue.Count == 0)
         {
             choosePlatform();
         }
-        GameObject platformType = (GameObject) prefabqueue.Dequeue();
+        else {
+            platformType = (GameObject)prefabqueue.Dequeue();
+        }
+        
         float yPos = yPosAtLastSpawn + distanceBetween + 15f;
         Vector2 pos = new Vector2(correctX(), yPos);
-        GameObject go = Instantiate(platformType, pos, Quaternion.identity);
-        if (platformParent) go.transform.parent = platformParent;
-        else 
-        { 
-        platformParent = (Transform) new GameObject(platformPrefabs[0].name).transform;
-            GameObject spawnerObj = GameObject.Find(this.gameObject.name);
-            platformParent.parent = spawnerObj.transform;
-        go.transform.parent = platformParent;
+        GameObject go = platformType != null ? Instantiate(platformType, pos, Quaternion.identity) : null;
+        if (go)
+        {
+            if (platformParent) go.transform.parent = platformParent;
+            else
+            {
+                platformParent = (Transform)new GameObject(platformPrefabs[0].name).transform;
+                GameObject spawnerObj = GameObject.Find(this.gameObject.name);
+                platformParent.parent = spawnerObj.transform;
+                go.transform.parent = platformParent;
+            }
         }
+
        // SpawnSecond(platformType, yPos);
 	}
 
@@ -154,7 +163,7 @@ public class PlatformSpawnerScript : MonoBehaviour {
             PlatformScheme(0, 40, 5, 10, 5, 10, 10, 10, 10); // Fliptastic
         } */
 
-        PlatformScheme(3, 18, 15, 12, 11, 10, 9, 8, 5, 20); // More hard stuff, first blink
+        PlatformScheme(3, 18, 15, 12, 11, 10, 9, 8, 5, 20, 100); // More hard stuff, first blink
     }
 
     /**

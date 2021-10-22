@@ -13,14 +13,20 @@ public class Controller : MonoBehaviour
     Animator anim;
     public GameObject eggParent;
     SpriteRenderer sprender;
+    _GameManager gm;
     // Start is called before the first frame update
     private void Start()
     {
         sprender = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         asource = GetComponent<AudioSource>();
+        gm = GameObject.FindGameObjectWithTag("gm").GetComponent<_GameManager>();
     }
 
+
+    /// <summary>
+    /// Swipe Start
+    /// </summary>
     public void OnSwipeLeft()
     {
         if (transform.position.x > -1.8f) {
@@ -30,7 +36,6 @@ public class Controller : MonoBehaviour
             sprender.flipX = false;
             asource.Play();
         }
-
     }
     public void OnSwipeRight()
     {
@@ -39,17 +44,19 @@ public class Controller : MonoBehaviour
             transform.DOMove(new Vector2(transform.position.x + 1.8f,
 transform.position.y + jumpPower), 0f)
 .SetEase(Ease.Flash);
-            // transform.DOShakeRotation(0.15f, 1, 100, 100).SetEase(Ease.OutElastic);
             sprender.flipX = true;
             asource.Play();
         }
-
     }
+    /// <summary>
+    /// Swipe End
+    /// </summary>
+
 
     private void InstanceEgg()
     {
         anim.SetTrigger("egg");
-        eggGo = (GameObject) Instantiate(Resources.Load("egg"), transform.position - transform.up, Quaternion.identity);
+        eggGo = (GameObject)Instantiate(Resources.Load("egg"), transform.position - transform.up, Quaternion.identity);
         if (eggParent) eggGo.transform.parent = eggParent.transform;
         else {
             eggParent = new GameObject("_eggParent");
@@ -84,22 +91,32 @@ transform.position.y + jumpPower), 0f)
     public int heighBackup;
     GameObject plGo;
     GameObject eggGo;
-    private void SpawnPlatforms() {
-        int rand = UnityEngine.Random.Range(0, 3);
-        switch (rand)
-        {
-            case 0:
-                plGo = (GameObject)Instantiate(Resources.Load("Platform_small"), new Vector2(-1.8f, heighBackup + 3), Quaternion.identity);
-                break;
-            case 1:
-                plGo = (GameObject)Instantiate(Resources.Load("Platform_small"), new Vector2(0, heighBackup + 3), Quaternion.identity);
-                break;
-            default:
-                plGo = (GameObject)Instantiate(Resources.Load("Platform_small"), new Vector2(1.8f, heighBackup + 3), Quaternion.identity);
-                break;
-        }
-        heighBackup = (int)plGo.transform.position.y;
-    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Portal")) {
+            Destroy(collision.gameObject);
+            gm.LoadLevel();
+        }
+        if (collision.gameObject.CompareTag("bricks"))
+        {
+            Destroy(collision.gameObject);
+            gm.toasty = true;
+            Debug.Log("Toasty!!!!!!");
+            StartCoroutine(ShowStarts());
+        }
+        if (collision.gameObject.CompareTag("coin"))
+        {
+           DOTweenAnimation coinAnim = collision.gameObject.GetComponent<DOTweenAnimation>();
+            collision.transform.DOLocalMove(targetCoins.transform.position, 1).OnComplete(() =>Destroy(collision.gameObject));
+        }
+    }
+    public GameObject targetCoins;
+    public GameObject startsObject;
+    IEnumerator ShowStarts() {
+        startsObject.SetActive(true);
+        yield return new WaitForSeconds(4f);
+        startsObject.SetActive(false);
+    }
 
 }

@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Portal
+  - gm
+  - bricks
+  - coin
   layers:
   - Default
   - TransparentFX
