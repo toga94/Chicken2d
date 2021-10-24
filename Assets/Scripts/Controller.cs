@@ -100,6 +100,8 @@ transform.position.y + jumpPower), 0f)
         }
         if (collision.gameObject.CompareTag("bricks"))
         {
+            GameObject go = (GameObject)Instantiate(Resources.Load("bingSoundfx"));
+            Destroy(go, 2);
             Destroy(collision.gameObject);
             gm.toasty = true;
             Debug.Log("Toasty!!!!!!");
@@ -109,6 +111,7 @@ transform.position.y + jumpPower), 0f)
         {
            DOTweenAnimation coinAnim = collision.gameObject.GetComponent<DOTweenAnimation>();
             collision.transform.DOLocalMove(targetCoins.transform.position, 1).OnComplete(() =>Destroy(collision.gameObject));
+            collision.gameObject.GetComponent<AudioSource>().Play();
         }
     }
     public GameObject targetCoins;

@@ -9,11 +9,11 @@ D:\UnityEditor\2020.3.8f1\Editor\Unity.exe
 -batchMode
 -noUpm
 -name
-AssetImportWorker0
+AssetImportWorker1
 -projectPath
 D:/UnityProjects/Chicken2d
 -logFile
-Logs/AssetImportWorker0.log
+Logs/AssetImportWorker1.log
 -srvPort
 18156
 Successfully changed project path to: D:/UnityProjects/Chicken2d
