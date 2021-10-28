@@ -14,15 +14,49 @@ public class Controller : MonoBehaviour
     public GameObject eggParent;
     SpriteRenderer sprender;
     _GameManager gm;
+    PlayerResources playerResources;
     // Start is called before the first frame update
     private void Start()
     {
+        SwipeManagerNew.OnSwipeDetected += OnSwipeDetected;
         sprender = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         asource = GetComponent<AudioSource>();
         gm = GameObject.FindGameObjectWithTag("gm").GetComponent<_GameManager>();
+        playerResources = gm.GetComponent<PlayerResources>();
     }
 
+
+    void OnSwipeDetected(Swipe direction, Vector2 swipeVelocity)
+    {
+        if (direction == Swipe.Left)
+        {
+            if (transform.position.x > -1.8f)
+            {
+                transform.DOMove(new Vector2(transform.position.x - 1.8f,
+                transform.position.y + jumpPower), 0f)
+                .SetEase(Ease.Flash);
+                sprender.flipX = false;
+                asource.Play();
+            }
+        }
+        else if (direction == Swipe.Right) {
+            if (transform.position.x < 1.8f)
+            {
+                transform.DOMove(new Vector2(transform.position.x + 1.8f,
+                transform.position.y + jumpPower), 0f)
+                .SetEase(Ease.Flash);
+                sprender.flipX = true;
+                asource.Play();
+            }
+        }
+
+            Debug.Log("swipe " + direction.ToString());
+
+        // do something with direction or the velocity of the swipe
+    }
+
+    /*
 
     /// <summary>
     /// Swipe Start
@@ -51,6 +85,10 @@ transform.position.y + jumpPower), 0f)
     /// <summary>
     /// Swipe End
     /// </summary>
+
+    */
+
+
 
 
     private void InstanceEgg()
@@ -110,10 +148,16 @@ transform.position.y + jumpPower), 0f)
         if (collision.gameObject.CompareTag("coin"))
         {
            DOTweenAnimation coinAnim = collision.gameObject.GetComponent<DOTweenAnimation>();
-            collision.transform.DOLocalMove(targetCoins.transform.position, 1).OnComplete(() =>Destroy(collision.gameObject));
+            collision.transform.DOLocalMove(targetCoins.transform.position, 1).OnComplete(() => CoinCalc(collision.gameObject));
             collision.gameObject.GetComponent<AudioSource>().Play();
         }
     }
+
+    private void CoinCalc(GameObject a) {
+        Destroy(a);
+        playerResources.AddCoin(1);
+    }
+
     public GameObject targetCoins;
     public GameObject startsObject;
     IEnumerator ShowStarts() {

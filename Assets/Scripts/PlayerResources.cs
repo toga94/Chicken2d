@@ -11,12 +11,18 @@ public class PlayerResources : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        coinUI.text = MinifyCurrency(currentCoins);
     }
 
     // Update is called once per frame
     void Update()
     {
+       
+    }
+
+    public void AddCoin (float value)
+    {
+        currentCoins += value;
         coinUI.text = MinifyCurrency(currentCoins);
     }
     public string MinifyCurrency(float value)
